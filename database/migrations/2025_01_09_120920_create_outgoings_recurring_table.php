@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('day');
-            $table->integer('category');
             $table->string('title');
             $table->decimal('cost');
             $table->timestamps();

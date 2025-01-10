@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('month_id');
             $table->boolean('recurring')->default(0);
             $table->integer('day');
-            $table->integer('category');
             $table->string('title');
             $table->decimal('cost');
             $table->boolean('paid')->default(0);
