@@ -21,7 +21,9 @@ class MonthFactory extends Factory
             'user_id' => User::factory(),
             'month' => fake()->numberBetween(1, 12),
             'year'  => fake()->numberBetween(2024, 2026),
-            'income' => fake()->numberBetween(1000, 4000),
+            'income' => function (array $attributes) {
+                return User::find($attributes['user_id'])->monthly_income;
+            }
         ];
     }
 }

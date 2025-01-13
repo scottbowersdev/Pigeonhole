@@ -1,10 +1,21 @@
 {
+    "config": {
+        "ssh": {
+            "user": "scotbowers.dev",
+            "server": "ssh.gb.stackcp.com",
+            "folders": {
+                "live": "~/public_html/"
+            }
+        }
+    },
     "private": true,
     "type": "module",
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "push:git": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\""
+        "push:git": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\"",
+        "sync:live": "echo Starting File Sync && rsync -av --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fog=r --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/sync\" * . $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_live && ssh -i ~/.ssh/sync $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_live && /usr/bin/php74 -d memory_limit=-1 -f /usr/bin/composer update && npm install\" && echo Finished File Sync",
+        "push:live": "clear && echo Starting Live Push && yarn sync:live && echo Finished Live Push"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
