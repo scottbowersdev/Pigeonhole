@@ -14,4 +14,14 @@ class Category extends Model
     {
         return $this->belongsToMany(Wishlist::class);
     }
+
+    public function outgoings_recurring()
+    {
+        return $this->belongsToMany(OutgoingsRecurring::class, relatedPivotKey: 'outgoings_recurring_id');
+    }
+
+    public function outgoings()
+    {
+        return $this->belongsToMany(Outgoing::class);
+    }
 }

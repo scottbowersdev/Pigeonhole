@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    public function outgoing()
+    {
+        return $this->hasMany(Outgoing::class);
+    }
+
+    public function outgoing_recurring()
+    {
+        return $this->hasMany(OutgoingsRecurring::class);
+    }
 }

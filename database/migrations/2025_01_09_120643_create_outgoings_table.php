@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Outgoing;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +24,13 @@ return new class extends Migration
             $table->boolean('paid')->default(0);
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create('category_outgoing', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Outgoing::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 
