@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index', [
-        'months' => Month::orderBy('year', 'asc')->orderBy('month', 'asc')->get()
+        'months' => Month::orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get()
     ]);
 });
 
