@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('outgoings', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
             $table->integer('month_id');
             $table->boolean('recurring')->default(0);
             $table->integer('day');

@@ -12,11 +12,6 @@ class Outgoing extends Model
 
     protected $fillable = ['user_id', 'month_id', 'recurring', 'day', 'title', 'cost', 'paid'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function month()
     {
         return $this->belongsTo(Month::class);

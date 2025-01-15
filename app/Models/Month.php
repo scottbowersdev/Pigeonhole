@@ -19,6 +19,6 @@ class Month extends Model
 
     public function outgoings()
     {
-        return $this->hasMany(Outgoing::class);
+        return $this->hasMany(Outgoing::class)->orderBy('day', 'asc');
     }
 }

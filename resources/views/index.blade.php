@@ -2,6 +2,7 @@
 
     <x-slot:meta_title>Pigeonhole | Organise your money</x-slot:meta_title>
     <x-slot:page_title>Dashboard</x-slot:page_title>
+    <x-slot:buttons></x-slot:buttons>
 
     <ul role="list" class="divide-y divide-gray-100">
         @foreach ($months as $month)

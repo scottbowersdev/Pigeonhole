@@ -19,7 +19,6 @@ class OutgoingFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
             'month_id' => Month::factory(),
             'recurring' => fake()->boolean(),
             'day' => fake()->numberBetween(1, 31),
