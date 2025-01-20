@@ -121,7 +121,7 @@ Route::get('/outgoings/paid/{id}', function ($id) {
     ]);
 
     // Redirect
-    return redirect('/month/' . $month->id)->withSuccess('Your outgoing has been marked as ' . ($outgoing->paid == 1 ? 'unpaid' : 'paid') . '.');
+    return redirect('/month/' . $month->id)->withSuccess('Your outgoing has been marked as ' . ($outgoing->paid == 1 ? 'paid' : 'unpaid') . '.');
 });
 
 /* =============
@@ -141,8 +141,10 @@ Route::get('/wishlist/new', function () {
 });
 
 Route::get('/wishlist', function () {
+
     return view('wishlist.index', [
-        'wishlist' => Wishlist::where('purchased', '0')->orderBy('priority', 'asc')->orderBy('cost', 'asc')->get()
+        'wishlist' => Wishlist::where('purchased', '0')->orderBy('priority', 'asc')->orderBy('cost', 'asc')->paginate(10),
+        'wishlist_tot' => Wishlist::where('purchased', '0')->sum('cost')
     ]);
 });
 

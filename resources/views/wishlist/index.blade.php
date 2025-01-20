@@ -12,7 +12,7 @@
 
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
-            <h3 class="text-lg font-bold text-slate-800">&pound;{{ $wishlist->sum('cost') }}</h3>
+            <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($wishlist_tot) }}</h3>
         </div>
         <div class="ml-3">
             <div class="w-full max-w-sm min-w-[200px] relative">
@@ -62,7 +62,15 @@
                         <p class="block font-semibold text-sm text-slate-800">{{ $wishlist_item->priority }}</p>
                     </td>
                     <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">{{ $wishlist_item->title }}</p>
+                        <p class="block text-sm text-slate-800">
+                            @if(!empty($wishlist_item->url))
+                            <a href="{{ $wishlist_item->url }}" target="_blank"><strong>
+                                    @endif
+                                    {{ $wishlist_item->title }}
+                                    @if(!empty($wishlist_item->url))
+                                </strong></a>
+                            @endif
+                        </p>
                     </td>
                     <td class="p-4 py-5">
                         <p class="block text-sm text-slate-800">&pound;{{ $wishlist_item->cost }}</p>
@@ -97,5 +105,7 @@
             </tbody>
         </table>
     </div>
+
+    <div class="mt-6">{{ $wishlist->links() }}</div>
 
 </x-layout>
