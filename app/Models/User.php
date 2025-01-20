@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,5 +64,37 @@ class User extends Authenticatable
     public function outgoing_recurring()
     {
         return $this->hasMany(OutgoingsRecurring::class);
+    }
+
+    public function generateMonths(int $number = 12)
+    {
+
+        $current = Carbon::parse(now());
+
+        for ($count = 0; $count < $number; $count++) {
+
+            if ($count > 0) {
+                $nextMonth = $current->addMonth();
+            } else {
+                $nextMonth = $current;
+            }
+
+            // Check if record exists
+            $curr_month = Month::where('month', $nextMonth->format('n'))->where('year', $nextMonth->format('Y'));
+
+            // Create record if not exists
+            if ($curr_month->count() == 0) {
+
+                $month = Month::create([
+                    'user_id' => '1',
+                    'month' => $nextMonth->format('n'),
+                    'year'  => $nextMonth->format('Y'),
+                    'income' => User::find(1)->monthly_income
+                ]);
+
+                // Get recurring and populate
+
+            }
+        }
     }
 }

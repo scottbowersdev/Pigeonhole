@@ -118,7 +118,7 @@
     <div class="w-full mt-8 bg-white border border-gray-200 rounded-lg shadow">
         <div class="border-t border-gray-200">
             <div class=" p-4 bg-white rounded-lg md:p-8" id="stats" role="tabpanel" aria-labelledby="stats-tab">
-                <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 sm:p-8">
+                <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 sm:p-8">
                     <div class="flex flex-col items-center justify-center">
                         <dt class="mb-2 text-3xl font-extrabold">&pound;{{ number_format($total_out,2) }}</dt>
                         <dd class="text-gray-500">Total Out</dd>

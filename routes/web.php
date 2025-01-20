@@ -3,6 +3,7 @@
 use App\Models\Month;
 use App\Models\Outgoing;
 use App\Models\OutgoingsRecurring;
+use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index', [
-        'months' => Month::orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get()
+        'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
+        'user' => User::find(1)
     ]);
 });
 
