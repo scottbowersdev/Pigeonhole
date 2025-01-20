@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->integer('priority');
             $table->string('title');
-            $table->string('url');
+            $table->string('url')->nullable();
             $table->decimal('cost');
             $table->boolean('purchased')->default(0);
             $table->timestamp('date_purchased')->nullable();

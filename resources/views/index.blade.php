@@ -6,7 +6,7 @@
 
     <ul role="list" class="divide-y divide-gray-100">
         @foreach ($months as $month)
-        <a href="/view/{{ $month['id'] }}" class="hover:text-white">
+        <a href="/month/{{ $month['id'] }}" class="hover:text-white">
             <li class="flex justify-between gap-x-6 p-5 hover:bg-slate-900 hover:!text-white {{ ($loop->iteration % 2 == 0 ? 'bg-slate-200' : FALSE) }}">
                 <div class="flex min-w-0 gap-x-4">
                     <div class="min-w-0 flex-auto">

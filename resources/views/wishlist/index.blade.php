@@ -1,14 +1,10 @@
 <x-layout>
 
-    <x-slot:meta_title>{{ date("F", mktime(0, 0, 0, $month['month'], 1)) }} {{ $month['year'] }} - Pigeonhole | Organise your money</x-slot:meta_title>
+    <x-slot:meta_title>Wishlist - Pigeonhole | Organise your money</x-slot:meta_title>
 
-    <x-slot:page_title>
-        {{ date("F", mktime(0, 0, 0, $month['month'], 1)) }} <span class="text-sm">{{ $month['year'] }}</span></x-slot:page_title>
+    <x-slot:page_title>My Wishlist</x-slot:page_title>
 
-    <x-slot:buttons>
-        <a href="/month/{{ $month['id'] }}/new-outgoing" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Add new</a>
-        <a href="/" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 ml-6">Back</a>
-    </x-slot:buttons>
+    <x-slot:buttons><a href="/wishlist/new" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Add new</a></x-slot:buttons>
 
     @if(session('success'))
     <x-messages type="success">{{ session('success') }}</x-messages>
@@ -16,7 +12,7 @@
 
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
-            <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($month['income'],2) }}</h3>
+            <h3 class="text-lg font-bold text-slate-800">&pound;{{ $wishlist->sum('cost') }}</h3>
         </div>
         <div class="ml-3">
             <div class="w-full max-w-sm min-w-[200px] relative">
@@ -42,7 +38,7 @@
                 <tr>
                     <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50">
                         <p class="block text-sm font-normal leading-none text-slate-500">
-                            Day
+                            Priority
                         </p>
                     </th>
                     <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50">
@@ -60,32 +56,32 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($month->outgoings as $outgoing)
+                @foreach ($wishlist as $wishlist_item)
                 <tr class="hover:bg-slate-50 border-b border-slate-200">
                     <td class="p-4 py-5">
-                        <p class="block font-semibold text-sm text-slate-800">{{ $outgoing['day'] }}</p>
+                        <p class="block font-semibold text-sm text-slate-800">{{ $wishlist_item->priority }}</p>
                     </td>
                     <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">{{ $outgoing['title'] }}</p>
+                        <p class="block text-sm text-slate-800">{{ $wishlist_item->title }}</p>
                     </td>
                     <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">&pound;{{ $outgoing['cost'] }}</p>
+                        <p class="block text-sm text-slate-800">&pound;{{ $wishlist_item->cost }}</p>
                     </td>
                     <td class="p-4 py-5">
                         <div class="block text-center">
 
-                            <a href="/outgoings/paid/{{ $outgoing->id }}" class="text-slate-600 hover:text-slate-800 inline-block">
+                            <a href="/wishlist/paid/{{ $wishlist_item->id }}" class="text-slate-600 hover:text-slate-800 inline-block">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </a>
 
-                            <a href="/edit-outgoing/{{ $outgoing->id }}" class="text-slate-600 hover:text-slate-800 inline-block">
+                            <a href="/wishlist/edit/{{ $wishlist_item->id }}" class="text-slate-600 hover:text-slate-800 inline-block">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F" />
                                 </svg>
                             </a>
-                            <a href="/outgoings/delete/{{ $outgoing->id }}" onclick="return confirm('Are you sure you want to delete this outgoing?')" class="text-slate-600 hover:text-slate-800 inline-block">
+                            <a href="/wishlist/delete/{{ $wishlist_item->id }}" onclick="return confirm('Are you sure you want to delete this wishlist item?')" class="text-slate-600 hover:text-slate-800 inline-block">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
