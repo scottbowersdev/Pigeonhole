@@ -4,7 +4,7 @@
     <x-slot:page_title>Add new recurring outgoing</x-slot:page_title>
     <x-slot:buttons><a href="/recurring-outgoings" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Back</a></x-slot:buttons>
 
-    <form class="max-w-screen-md m-auto" method="POST" action="/recurring-outgoings/new">
+    <form class="max-w-screen-md m-auto" method="POST" action="/recurring-outgoings">
         @csrf
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">

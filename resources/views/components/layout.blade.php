@@ -54,8 +54,8 @@
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
                                 <x-nav href="/" :active="request()->is('/')">Dashboard</x-nav>
-                                <x-nav href="/wishlist" :active="request()->is('/wishlist')">Wishlist</x-nav>
-                                <x-nav href="/recurring-outgoings" :active="request()->is('/recurring-outgoings')">Recurring Outgoings</x-nav>
+                                <x-nav href="/wishlist" :active="request()->is('wishlist')">Wishlist</x-nav>
+                                <x-nav href="/recurring-outgoings" :active="request()->is('recurring-outgoings')">Recurring Outgoings</x-nav>
                             </div>
                         </div>
                     </div>
