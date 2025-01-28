@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('first_name');
             $table->string('surname');
-            $table->string('dp');
+            $table->string('dp')->nullable();
             $table->decimal('monthly_income');
             $table->rememberToken();
             $table->timestamps();

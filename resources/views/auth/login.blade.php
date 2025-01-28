@@ -28,7 +28,7 @@
                             <div class="sm:col-span-5">
                                 <x-form.label for="password">Password</x-form.label>
                                 <div class="mt-2">
-                                    <x-form.input name="password" id="password" required />
+                                    <x-form.input name="password" id="password" type="password" required />
                                     <x-form.error name="password"></x-form.error>
                                 </div>
                             </div>

@@ -9,13 +9,14 @@ use App\Models\Month;
 use App\Models\OutgoingsRecurring;
 use App\Models\User;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 //Dashboard
 Route::get('/', function () {
     return view('index', [
         'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
-        'user' => User::find(1)
+        'user' => Auth::user(),
     ]);
 });
 
@@ -66,3 +67,5 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 
 Route::get('/login', [SessionController::class, 'create']);
 Route::post('/login', [SessionController::class, 'store']);
+
+Route::post('/logout', [SessionController::class, 'destroy']);

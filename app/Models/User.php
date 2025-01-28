@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -86,7 +87,7 @@ class User extends Authenticatable
             if ($curr_month->count() == 0) {
 
                 $month = Month::create([
-                    'user_id' => '1',
+                    'user_id' => Auth::id(),
                     'month' => $nextMonth->format('n'),
                     'year'  => $nextMonth->format('Y'),
                     'income' => User::find(1)->monthly_income
