@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\OutgoingsController;
 use App\Http\Controllers\OutgoingsRecurringController;
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
 use App\Models\Month;
 use App\Models\OutgoingsRecurring;
@@ -57,3 +59,10 @@ Route::controller(OutgoingsRecurringController::class)->group(function () {
     Route::delete('/recurring-outgoings/{outgoingsRecurring}', 'destroy');
     Route::get('/recurring-outgoings/delete/{outgoingsRecurring}', 'delete');
 });
+
+// Auth
+Route::get('/register', [RegisteredUserController::class, 'create']);
+Route::post('/register', [RegisteredUserController::class, 'store']);
+
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
