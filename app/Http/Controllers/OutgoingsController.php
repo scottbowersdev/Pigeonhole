@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Month;
 use App\Models\Outgoing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OutgoingsController extends Controller
 {
@@ -12,6 +13,13 @@ class OutgoingsController extends Controller
 
     public function create(Month $month)
     {
+
+        Gate::define('access', function ($user, $month) {
+            return $month->user->is($user);
+        });
+
+        Gate::authorize('access', $month);
+
         return view('outgoings.create', [
             'month' => $month
         ]);

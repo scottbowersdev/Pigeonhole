@@ -19,4 +19,9 @@ class OutgoingsRecurring extends Model
     {
         return $this->belongsToMany(Category::class, foreignPivotKey: 'outgoings_recurring_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

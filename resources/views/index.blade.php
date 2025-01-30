@@ -4,7 +4,7 @@
     <x-slot:page_title>Dashboard</x-slot:page_title>
     <x-slot:buttons></x-slot:buttons>
 
-    @php $user->generateMonths()
+    @php if(Auth::check()) { Auth::user()->generateMonths(); }
     @endphp
 
     <ul role="list" class="divide-y divide-gray-100">

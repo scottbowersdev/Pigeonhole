@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\OutgoingsRecurring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OutgoingsRecurringController extends Controller
 {
     public function index()
     {
         return view('recurring-outgoings.index', [
-            'recurring_outgoings' => OutgoingsRecurring::orderBy('day', 'asc')->orderBy('cost', 'asc')->get()
+            'recurring_outgoings' => OutgoingsRecurring::where('user_id', Auth::id())->orderBy('day', 'asc')->orderBy('cost', 'asc')->get()
         ]);
     }
 

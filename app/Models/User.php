@@ -81,7 +81,7 @@ class User extends Authenticatable
             }
 
             // Check if record exists
-            $curr_month = Month::where('month', $nextMonth->format('n'))->where('year', $nextMonth->format('Y'));
+            $curr_month = Month::where('month', $nextMonth->format('n'))->where('year', $nextMonth->format('Y'))->where('user_id', Auth::id()); 
 
             // Create record if not exists
             if ($curr_month->count() == 0) {

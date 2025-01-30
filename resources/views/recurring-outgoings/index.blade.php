@@ -12,7 +12,7 @@
 
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
-            <h3 class="text-lg font-bold text-slate-800">&pound;{{ $recurring_outgoings->sum('cost') }}</h3>
+            <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($recurring_outgoings->sum('cost'),2) }}</h3>
         </div>
         <div class="ml-3">
             <div class="w-full max-w-sm min-w-[200px] relative">

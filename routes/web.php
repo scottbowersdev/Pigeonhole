@@ -15,57 +15,110 @@ use Illuminate\Support\Facades\Route;
 //Dashboard
 Route::get('/', function () {
     return view('index', [
-        'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
-        'user' => Auth::user(),
+        'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->where('user_id', Auth::id())->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
     ]);
-});
+})->middleware('auth');
 
 // Months
-Route::get('/month/{id}', function ($id) {
+Route::get('/month/{month}', function (Month $month) {
     return view('outgoings.index', [
-        'month' => Month::find($id),
+        'month' => $month,
     ]);
-});
+})
+->middleware('auth')
+->can('access', 'month');
 
 //Outgoings
-Route::controller(OutgoingsController::class)->group(function () {
-    Route::get('/month/{month}/new-outgoing', 'create');
-    Route::post('/outgoings/{id}', 'store');
-    Route::get('/edit-outgoing/{outgoing}', 'edit');
-    Route::patch('/outgoings/{outgoing}', 'update');
-    Route::delete('/outgoings/{outgoing}', 'destroy');
-    Route::get('/outgoings/delete/{outgoing}', 'delete');
-    Route::get('/outgoings/paid/{outgoing}', 'paid');
-});
+Route::get('/month/{month}/new-outgoing', [OutgoingsController::class, 'create'])
+    ->middleware('auth');
+    //->can('access', 'month');
+
+Route::post('/outgoings/{id}', [OutgoingsController::class, 'store'])
+    ->middleware('auth');
+
+Route::get('/edit-outgoing/{outgoing}', [OutgoingsController::class, 'edit'])
+    ->middleware('auth')
+    ->can('access', 'outgoing');
+
+Route::patch('/outgoings/{outgoing}', [OutgoingsController::class, 'update'])
+    ->middleware('auth')
+    ->can('access', 'outgoing');
+
+Route::delete('/outgoings/{outgoing}', [OutgoingsController::class, 'destroy'])
+    ->middleware('auth')
+    ->can('access', 'outgoing');
+
+Route::get('/outgoings/delete/{outgoing}', [OutgoingsController::class, 'delete'])
+    ->middleware('auth')
+    ->can('access', 'outgoing');
+
+Route::get('/outgoings/paid/{outgoing}', [OutgoingsController::class, 'paid'])
+    ->middleware('auth')
+    ->can('access', 'outgoing');
+
 
 // Wishlist
-Route::controller(WishlistController::class)->group(function () {
-    Route::get('/wishlist', 'index');
-    Route::get('/wishlist/new', 'create');
-    Route::post('/wishlist', 'store');
-    Route::get('/wishlist/edit/{wishlist}', 'edit');
-    Route::patch('/wishlist/{wishlist}', 'update');
-    Route::delete('/wishlist/{wishlist}', 'destroy');
-    Route::get('/wishlist/delete/{wishlist}', 'delete');
-    Route::get('/wishlist/paid/{wishlist}', 'paid');
-});
+Route::get('/wishlist', [WishlistController::class, 'index'])
+    ->middleware('auth');
+
+Route::get('/wishlist/new', [WishlistController::class, 'create'])
+    ->middleware('auth');
+
+Route::post('/wishlist', [WishlistController::class, 'store'])
+    ->middleware('auth');
+
+Route::get('/wishlist/edit/{wishlist}', [WishlistController::class, 'edit'])
+    ->middleware('auth')
+    ->can('access', 'wishlist');
+
+Route::patch('/wishlist/{wishlist}', [WishlistController::class, 'update'])
+    ->middleware('auth')
+    ->can('access', 'wishlist');
+
+Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
+    ->middleware('auth')
+    ->can('access', 'wishlist');
+
+Route::get('/wishlist/delete/{wishlist}', [WishlistController::class, 'delete'])
+    ->middleware('auth')
+    ->can('access', 'wishlist');
+
+Route::get('/wishlist/paid/{wishlist}', [WishlistController::class, 'paid'])
+    ->middleware('auth')
+    ->can('access', 'wishlist');
+
 
 // Recurring Outgoings
-Route::controller(OutgoingsRecurringController::class)->group(function () {
-    Route::get('/recurring-outgoings', 'index');
-    Route::get('/recurring-outgoings/new', 'create');
-    Route::post('/recurring-outgoings', 'store');
-    Route::get('/recurring-outgoings/edit/{outgoingsRecurring}', 'edit');
-    Route::patch('/recurring-outgoings/{outgoingsRecurring}', 'update');
-    Route::delete('/recurring-outgoings/{outgoingsRecurring}', 'destroy');
-    Route::get('/recurring-outgoings/delete/{outgoingsRecurring}', 'delete');
-});
+Route::get('/recurring-outgoings', [OutgoingsRecurringController::class, 'index'])
+    ->middleware('auth');
+
+Route::get('/recurring-outgoings/new', [OutgoingsRecurringController::class, 'create'])
+    ->middleware('auth');
+
+Route::post('/recurring-outgoings', [OutgoingsRecurringController::class, 'store'])
+    ->middleware('auth');
+
+Route::get('/recurring-outgoings/edit/{outgoingsRecurring}', [OutgoingsRecurringController::class, 'edit'])
+    ->middleware('auth')
+    ->can('access', 'outgoingsRecurring');
+
+Route::patch('/recurring-outgoings/{outgoingsRecurring}', [OutgoingsRecurringController::class, 'update'])
+    ->middleware('auth')
+    ->can('access', 'outgoingsRecurring');
+
+Route::delete('/recurring-outgoings/{outgoingsRecurring}', [OutgoingsRecurringController::class, 'destroy'])
+    ->middleware('auth')
+    ->can('access', 'outgoingsRecurring');
+
+Route::get('/recurring-outgoings/delete/{outgoingsRecurring}', [OutgoingsRecurringController::class, 'delete'])
+    ->middleware('auth')
+    ->can('access', 'outgoingsRecurring');
 
 // Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::get('/login', [SessionController::class, 'create']);
+Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 
 Route::post('/logout', [SessionController::class, 'destroy']);

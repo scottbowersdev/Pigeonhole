@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
     public function index()
     {
         return view('wishlist.index', [
-            'wishlist' => Wishlist::where('purchased', '0')->orderBy('priority', 'asc')->orderBy('cost', 'asc')->paginate(10),
-            'wishlist_tot' => Wishlist::where('purchased', '0')->sum('cost')
+            'wishlist' => Wishlist::where('purchased', '0')->where('user_id', Auth::id())->orderBy('priority', 'asc')->orderBy('cost', 'asc')->paginate(10),
         ]);
     }
 
