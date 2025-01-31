@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Outgoing;
 use App\Models\OutgoingsRecurring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,22 @@ class OutgoingsRecurringController extends Controller
             $outgoingRecurring->categories()->attach(request('category'));
         }
 
+        // Add new recurring outgoing to all future monthly outgoings
+        $user = Auth::user();
+        $months = $user->months()->where('year', '>=', date('Y'))->where('month', '>', date('n'))->get();
+
+        foreach($months as $month) {
+            $new_outgoing = $month->outgoings()->create([
+                'title' => $outgoingRecurring->title,
+                'cost' => $outgoingRecurring->cost,
+                'day' => $outgoingRecurring->day,
+                'recurring' => 1
+            ]);
+
+            if(request('category') != null) {
+                $new_outgoing->categories()->attach(request('category'));
+            }
+        }
 
         return redirect('/recurring-outgoings')->withSuccess('Your recurring outgoing has been added successfully.');
     }
@@ -62,7 +79,28 @@ class OutgoingsRecurringController extends Controller
             'cost' => ['required', 'numeric', 'min:0.01']
         ]);
 
-        // Authorise
+        // Update recurring outgoing for all future monthly outgoings
+        $user = Auth::user();
+        $months = $user->months()->whereHas('outgoings', function($query) use($outgoingsRecurring) {
+                $query->where('recurring', 1)->where('day', $outgoingsRecurring->day)->where('title', $outgoingsRecurring->title)->where('cost', $outgoingsRecurring->cost);
+            })->where('year', '>=', date('Y'))->where('month', '>', date('n'))->get();
+
+        foreach($months as $month) {
+
+            $existing_outgoing = Outgoing::where('month_id', $month->id)->where('recurring', 1)->where('day', $outgoingsRecurring->day)->where('title', $outgoingsRecurring->title)->where('cost', $outgoingsRecurring->cost)->first();
+            
+            $existing_outgoing->update([
+                'title' => request('title'),
+                'cost' => request('cost'),
+                'day' => request('day')
+            ]);
+
+            if(request('category') != null && (request('category') != $outgoingsRecurring->categories()->first()->id)) {
+                $existing_outgoing->categories()->detach();
+                $existing_outgoing->categories()->attach(request('category'));
+            }
+
+        }
 
         // Update
         $outgoingsRecurring->update([
@@ -82,7 +120,21 @@ class OutgoingsRecurringController extends Controller
 
     public function destroy(OutgoingsRecurring $outgoingsRecurring)
     {
-        // Authorise
+
+        // Update recurring outgoing for all future monthly outgoings
+        $user = Auth::user();
+        $months = $user->months()->whereHas('outgoings', function($query) use($outgoingsRecurring) {
+                $query->where('recurring', 1)->where('day', $outgoingsRecurring->day)->where('title', $outgoingsRecurring->title)->where('cost', $outgoingsRecurring->cost);
+            })->where('year', '>=', date('Y'))->where('month', '>', date('n'))->get();
+
+        foreach($months as $month) {
+
+            $existing_outgoing = Outgoing::where('month_id', $month->id)->where('recurring', 1)->where('day', $outgoingsRecurring->day)->where('title', $outgoingsRecurring->title)->where('cost', $outgoingsRecurring->cost)->first();
+            
+            $existing_outgoing->delete();
+            $existing_outgoing->categories()->detach();
+
+        }
 
         // Delete
         $outgoingsRecurring->delete();
@@ -93,7 +145,21 @@ class OutgoingsRecurringController extends Controller
 
     public function delete(OutgoingsRecurring $outgoingsRecurring)
     {
-        // Authorise
+
+        // Update recurring outgoing for all future monthly outgoings
+        $user = Auth::user();
+        $months = $user->months()->whereHas('outgoings', function($query) use($outgoingsRecurring) {
+                $query->where('recurring', 1)->where('day', $outgoingsRecurring->day)->where('title', $outgoingsRecurring->title)->where('cost', $outgoingsRecurring->cost);
+            })->where('year', '>=', date('Y'))->where('month', '>', date('n'))->get();
+
+        foreach($months as $month) {
+
+            $existing_outgoing = Outgoing::where('month_id', $month->id)->where('recurring', 1)->where('day', $outgoingsRecurring->day)->where('title', $outgoingsRecurring->title)->where('cost', $outgoingsRecurring->cost)->first();
+            
+            $existing_outgoing->delete();
+            $existing_outgoing->categories()->detach();
+
+        }
 
         // Delete
         $outgoingsRecurring->delete();

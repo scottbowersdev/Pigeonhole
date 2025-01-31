@@ -19,7 +19,7 @@ class RegisteredUserController extends Controller
             'first_name' => ['required'],
             'surname' => ['required'],
             'monthly_income' => ['required', 'numeric'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', Password::min(6)->numbers()->letters()->mixedCase(), 'confirmed'],
         ]);
 

@@ -79,7 +79,7 @@
                     $category_tots[$outgoing->categories->first()->id] = $outgoing->cost; 
                 }
                 @endphp
-                <tr class="hover:font-semibold text-slate-800 border-b {{ $highlight_css }}">
+                <tr class="text-slate-800 border-b {{ $highlight_css }}">
                     <td class="p-4 py-5">
                         <p class="block text-xs text-center">{{ $outgoing->day }}</p>
                     </td>
