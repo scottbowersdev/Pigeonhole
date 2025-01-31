@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->hasMany(OutgoingsRecurring::class);
     }
 
+    public function months()
+    {
+        return $this->hasMany(Month::class);
+    }
+
     public function generateMonths(int $number = 12)
     {
 

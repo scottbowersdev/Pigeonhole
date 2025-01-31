@@ -67,12 +67,13 @@
                             <div class="relative ml-3">
                                 <div>
                                     @guest
-                                    <x-nav href="/login" :active="request()->is('/login')">Login</x-nav>
-                                    <x-nav href="/register" :active="request()->is('/register')">Register</x-nav>
+                                    <x-nav href="/login" :active="request()->is('login')">Login</x-nav>
+                                    <x-nav href="/register" :active="request()->is('register')">Register</x-nav>
                                     @endguest
 
                                     @auth
-                                    <form method="POST" action="/logout">
+                                    <x-nav href="/profile" :active="request()->is('profile')">{{ Auth::user()->first_name.' '.Auth::user()->surname }}</x-nav>
+                                    <form method="POST" action="/logout" class="inline">
                                         @csrf
                                         <x-form.button>Logout</x-form.button>
                                     </form>

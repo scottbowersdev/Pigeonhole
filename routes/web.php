@@ -6,11 +6,8 @@ use App\Http\Controllers\OutgoingsRecurringController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
-use App\Models\Category;
+use App\Http\Controllers\UserController;
 use App\Models\Month;
-use App\Models\OutgoingsRecurring;
-use App\Models\User;
-use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -150,3 +147,7 @@ Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 
 Route::post('/logout', [SessionController::class, 'destroy']);
+
+// Profile
+Route::get('/profile', [UserController::class, 'index'])->middleware('auth');
+Route::patch('/profile', [UserController::class, 'update'])->middleware('auth');
