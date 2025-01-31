@@ -56,6 +56,7 @@
                                 <x-nav href="/" :active="request()->is('/')">Dashboard</x-nav>
                                 <x-nav href="/wishlist" :active="request()->is('wishlist')">Wishlist</x-nav>
                                 <x-nav href="/recurring-outgoings" :active="request()->is('recurring-outgoings')">Recurring Outgoings</x-nav>
+                                <x-nav href="/categories" :active="request()->is('categories')">Categories</x-nav>
                             </div>
                         </div>
                     </div>
@@ -122,6 +123,7 @@
                     <x-nav href="/" :active="request()->is('/')" :mobile="true">Dashboard</x-nav>
                     <x-nav href="/wishlist" :active="request()->is('/wishlist')" :mobile="true">Wishlist</x-nav>
                     <x-nav href="/recurring-outgoings" :active="request()->is('/recurring-outgoings')" :mobile="true">Recurring Outgoings</x-nav>
+                    <x-nav href="/categories" :active="request()->is('/categories')" :mobile="true">Categories</x-nav>
                 </div>
                 <div class="border-t border-gray-700 pb-3 pt-4">
                     <div class="flex items-center px-5">

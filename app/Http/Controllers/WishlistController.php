@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,9 @@ class WishlistController extends Controller
 
     public function create()
     {
-        return view('wishlist.create');
+        return view('wishlist.create', [
+            'categories' => Category::where('user_id', Auth::id())->get()
+        ]);
     }
 
     public function store()
@@ -28,14 +31,19 @@ class WishlistController extends Controller
             'cost' => ['required', 'numeric', 'min:0.01']
         ]);
 
-        Wishlist::create([
-            'user_id' => 1,
+        $wishlist = Wishlist::create([
+            'user_id' => Auth::id(),
             'priority' => request('priority'),
             'title' => request('title'),
             'cost' => request('cost'),
             'url' => request('url'),
             'purchased' => 0
         ]);
+
+        if(request('category') != null) {
+            $wishlist->categories()->attach(request('category'));
+        }
+
         return redirect('/wishlist')->withSuccess('Your wishlist item has been added successfully.');
     }
 
@@ -44,7 +52,8 @@ class WishlistController extends Controller
     public function edit(Wishlist $wishlist)
     {
         return view('wishlist.edit', [
-            'wishlist' => $wishlist
+            'wishlist' => $wishlist, 
+            'categories' => Category::where('user_id', Auth::id())->get()
         ]);
     }
 
@@ -66,6 +75,12 @@ class WishlistController extends Controller
             'cost' => request('cost'),
             'url' => request('url'),
         ]);
+
+        if(request('category') != null) {
+            $wishlist->categories()->detach();
+            $wishlist->categories()->attach(request('category'));
+        }
+
 
         // Redirect
         return redirect('/wishlist')->withSuccess('Your wishlist item has been updated successfully.');

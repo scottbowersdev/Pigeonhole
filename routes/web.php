@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OutgoingsController;
 use App\Http\Controllers\OutgoingsRecurringController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
+use App\Models\Category;
 use App\Models\Month;
 use App\Models\OutgoingsRecurring;
 use App\Models\User;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 //Dashboard
 Route::get('/', function () {
+    Auth::user()->generateMonths();
     return view('index', [
         'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->where('user_id', Auth::id())->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
     ]);
@@ -28,15 +31,40 @@ Route::get('/month/{month}', function (Month $month) {
 ->middleware('auth')
 ->can('access', 'month');
 
+//Categories
+Route::get('/categories', [CategoryController::class, 'index'])
+    ->middleware('auth');
+
+Route::get('/categories/new', [CategoryController::class, 'create'])
+    ->middleware('auth');
+
+Route::post('/categories', [CategoryController::class, 'store'])
+    ->middleware('auth');
+
+Route::get('/categories/edit/{category}', [CategoryController::class, 'edit'])
+    ->middleware('auth')
+    ->can('access', 'category');
+
+Route::patch('/categories/{category}', [CategoryController::class, 'update'])
+    ->middleware('auth')
+    ->can('access', 'category');
+
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])
+    ->middleware('auth')
+    ->can('access', 'category');
+
+Route::get('/categories/delete/{category}', [CategoryController::class, 'delete'])
+    ->middleware('auth')
+    ->can('access', 'category');
+
 //Outgoings
 Route::get('/month/{month}/new-outgoing', [OutgoingsController::class, 'create'])
     ->middleware('auth');
-    //->can('access', 'month');
 
 Route::post('/outgoings/{id}', [OutgoingsController::class, 'store'])
     ->middleware('auth');
 
-Route::get('/edit-outgoing/{outgoing}', [OutgoingsController::class, 'edit'])
+Route::get('/outgoings/edit/{outgoing}', [OutgoingsController::class, 'edit'])
     ->middleware('auth')
     ->can('access', 'outgoing');
 

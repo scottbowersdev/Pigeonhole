@@ -22,7 +22,7 @@ class Month extends Model
 
     public function outgoings()
     {
-        return $this->hasMany(Outgoing::class)->orderBy('recurring', 'desc')->orderBy('day', 'asc');
+        return $this->hasMany(Outgoing::class)->orderBy('day', 'asc')->orderBy('cost', 'asc');
     }
 
     public function sumOfCosts($month_id)

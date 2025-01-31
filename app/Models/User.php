@@ -70,32 +70,48 @@ class User extends Authenticatable
     public function generateMonths(int $number = 12)
     {
 
-        $current = Carbon::parse(now());
+        $current = Carbon::parse(now())->startOfMonth();
+        $thisMonth = $current;
 
         for ($count = 0; $count < $number; $count++) {
 
-            if ($count > 0) {
-                $nextMonth = $current->addMonth();
+            if($count == 0) {
+                $thisMonth = $current;
             } else {
-                $nextMonth = $current;
+                $thisMonth->addMonth();
             }
 
             // Check if record exists
-            $curr_month = Month::where('month', $nextMonth->format('n'))->where('year', $nextMonth->format('Y'))->where('user_id', Auth::id()); 
+            $curr_month = Month::where('month', $thisMonth->format('n'))->where('year', $thisMonth->format('Y'))->where('user_id', Auth::id()); 
 
             // Create record if not exists
             if ($curr_month->count() == 0) {
 
                 $month = Month::create([
                     'user_id' => Auth::id(),
-                    'month' => $nextMonth->format('n'),
-                    'year'  => $nextMonth->format('Y'),
+                    'month' => $thisMonth->format('n'),
+                    'year'  => $thisMonth->format('Y'),
                     'income' => User::find(1)->monthly_income
                 ]);
 
                 // Get recurring and populate
+                $recurringOutgoings = OutgoingsRecurring::where('user_id', Auth::id())->get();
+
+                foreach($recurringOutgoings as $recurringOutgoing) {
+
+                    $new_outgoing = $month->outgoings()->create([
+                        'recurring' => 1, 
+                        'title' => $recurringOutgoing->title,
+                        'cost' => $recurringOutgoing->cost,
+                        'day' => $recurringOutgoing->day,
+                    ]);
+
+                    $new_outgoing->categories()->attach($recurringOutgoing->categories);
+
+                }
 
             }
         }
+
     }
 }

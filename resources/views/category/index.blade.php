@@ -1,21 +1,21 @@
 <x-layout>
 
-    <x-slot:meta_title>Recurring Outgoings - Pigeonhole | Organise your money</x-slot:meta_title>
+    <x-slot:meta_title>Categories - Pigeonhole | Organise your money</x-slot:meta_title>
 
-    <x-slot:page_title>Recurring Outgoings</x-slot:page_title>
+    <x-slot:page_title>
+        Categories</x-slot:page_title>
 
-    <x-slot:buttons><a href="/recurring-outgoings/new" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Add new</a></x-slot:buttons>
+    <x-slot:buttons>
+        <a href="/categories/new" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Add new</a>
+    </x-slot:buttons>
 
     @if(session('success'))
     <x-messages type="success">{{ session('success') }}</x-messages>
     @endif
 
-    @php $category_tots = [];
-    @endphp
-
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
-            <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($recurring_outgoings->sum('cost'),2) }}</h3>
+            <h3 class="text-lg font-bold text-slate-800">&nbsp;</h3>
         </div>
         <div class="ml-3">
             <div class="w-full max-w-sm min-w-[200px] relative">
@@ -35,23 +35,13 @@
         </div>
     </div>
 
-    <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+    <div class="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
         <table class="w-full text-left table-auto min-w-max">
             <thead>
                 <tr>
-                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
-                            Day
-                        </p>
-                    </th>
-                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50">
+                    <th width="80%" class="p-4 border-b border-slate-300 bg-slate-50">
                         <p class="block text-sm font-normal leading-none text-slate-500">
                             Name
-                        </p>
-                    </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
-                            Cost
                         </p>
                     </th>
                     <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50">
@@ -59,34 +49,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($recurring_outgoings as $outgoing)
-                @php 
-                if(isset($category_tots[$outgoing->categories->first()->id])) { $category_tots[$outgoing->categories->first()->id] += $outgoing->cost; } else { $category_tots[$outgoing->categories->first()->id] = $outgoing->cost; }
-                @endphp
-                <tr class="hover:bg-slate-50 border-b border-slate-200">
+                @foreach ($categories as $category)
+                <tr class="hover:font-semibold text-slate-800 border-b">
                     <td class="p-4 py-5">
-                        <p class="block font-semibold text-sm text-slate-800">{{ $outgoing->day }}</p>
-                    </td>
-                    <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">
-                            {{ $outgoing->title }}
-                            @if($outgoing->categories()->exists())
-                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }}">{{ $outgoing->categories->first()->name }}</x-badge>
-                            @endif
+                        <p class="block text-sm">
+                            <x-badge class="{{ $category->css_classes() }}">{{ $category->name }}</x-badge>
                         </p>
-                    </td>
-                    <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">&pound;{{ number_format($outgoing->cost,2) }}</p>
                     </td>
                     <td class="p-4 py-5">
                         <div class="block text-center">
 
-                            <a href="/recurring-outgoings/edit/{{ $outgoing->id }}" class="text-slate-600 hover:text-slate-800 inline-block">
+                            <a href="/categories/edit/{{ $category->id }}" class="inline-block">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F" />
                                 </svg>
                             </a>
-                            <a href="/recurring-outgoings/delete/{{ $outgoing->id }}" onclick="return confirm('Are you sure you want to delete this recurring outgoing?')" class="text-slate-600 hover:text-slate-800 inline-block">
+                            <a href="/categories/delete/{{ $category->id }}" onclick="return confirm('Are you sure you want to delete this outgoing?')" class="inline-block">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -102,29 +80,5 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Categories card -->
-    @if(count($category_tots) > 0)
-    <h2 class="mt-10 text-xl font-semibold text-center">Category Breakdown</h2>
-    <div class="flex flex-wrap justify-center mt-4">
-
-        @foreach($category_tots as $id => $total) 
-        @php $category = App\Models\Category::find($id); @endphp
-        <div class="w-1/5 mx-2 mb-4">
-            <div class="flex h-full border rounded-lg shadow p-8 flex-col text-center {{ $category->css_classes() }}">
-                <div class="mb-3">
-                    <h2 class="text-lg font-medium text-center">{{ $category->name }}</h2>
-                </div>
-                <div class="justify-between flex-grow">
-                    <p class="mb-2 text-3xl font-extrabold">
-                        &pound;{{ number_format($total, 2) }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    
-    </div>
-    @endif
 
 </x-layout>

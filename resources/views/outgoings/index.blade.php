@@ -12,6 +12,7 @@
 
     @php
     $total_out = $month->sumOfCosts($month->id);
+    $category_tots = [];
     @endphp
 
     @if(session('success'))
@@ -65,14 +66,35 @@
             </thead>
             <tbody>
                 @foreach ($month->outgoings as $outgoing)
-                @php if($outgoing->paid == 1) { $highlight_css = 'bg-green-50 border-emerald-200'; } elseif(date('d') > $outgoing->day) { $highlight_css = 'bg-red-50 border-red-200'; } else { $highlight_css = 'border-slate-200'; }
+                @php if($outgoing->paid == 1) { 
+                    $highlight_css = 'bg-green-50 border-emerald-200'; 
+                } elseif(date('d') > $outgoing->day && $month->month == date('m')) { 
+                    $highlight_css = 'bg-red-50 border-red-200'; 
+                } else { 
+                    $highlight_css = 'border-slate-200'; 
+                }
+                if($outgoing->categories->count() > 0 && isset($category_tots[$outgoing->categories->first()->id])) {
+                    $category_tots[$outgoing->categories->first()->id] += $outgoing->cost; 
+                } elseif($outgoing->categories->count() > 0 && !isset($category_tots[$outgoing->categories->first()->id])) {
+                    $category_tots[$outgoing->categories->first()->id] = $outgoing->cost; 
+                }
                 @endphp
                 <tr class="hover:font-semibold text-slate-800 border-b {{ $highlight_css }}">
                     <td class="p-4 py-5">
                         <p class="block text-xs text-center">{{ $outgoing->day }}</p>
                     </td>
-                    <td class="p-4 py-5">
-                        <p class="block text-sm">{{ $outgoing->title }}</p>
+                    <td class="p-4 py-5 flex">
+                        <p class="text-sm flex-1">
+                            {{ $outgoing->title }}
+                            @if($outgoing->categories()->exists())
+                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }}">{{ $outgoing->categories->first()->name }}</x-badge>
+                            @endif
+                        </p>
+                        @if($outgoing->recurring == 1)
+                            <svg class="w-4 h-4 flex-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 2L21 6M21 6L17 10M21 6H7.8C6.11984 6 5.27976 6 4.63803 6.32698C4.07354 6.6146 3.6146 7.07354 3.32698 7.63803C3 8.27976 3 9.11984 3 10.8V11M3 18H16.2C17.8802 18 18.7202 18 19.362 17.673C19.9265 17.3854 20.3854 16.9265 20.673 16.362C21 15.7202 21 14.8802 21 13.2V13M3 18L7 22M3 18L7 14" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                        @endif
                     </td>
                     <td class="p-4 py-5">
                         <p class="block text-sm">&pound;{{ number_format($outgoing->cost,2) }}</p>
@@ -92,7 +114,7 @@
                                 @endif
                             </a>
 
-                            <a href="/edit-outgoing/{{ $outgoing->id }}" class="inline-block">
+                            <a href="/outgoings/edit/{{ $outgoing->id }}" class="inline-block">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F" />
                                 </svg>
@@ -115,7 +137,8 @@
     </div>
 
     <!-- Totals card -->
-    <div class="w-full mt-8 bg-white border border-gray-200 rounded-lg shadow">
+    <h2 class="mt-10 text-xl font-semibold text-center">Outgoings Breakdown</h2>
+    <div class="w-full mt-4 bg-white border border-gray-200 rounded-lg shadow">
         <div class="border-t border-gray-200">
             <div class=" p-4 bg-white rounded-lg md:p-8" id="stats" role="tabpanel" aria-labelledby="stats-tab">
                 <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 sm:p-8">
@@ -139,8 +162,31 @@
         </div>
     </div>
 
+    <!-- Categories card -->
+    <h2 class="mt-10 text-xl font-semibold text-center">Category Breakdown</h2>
+    <div class="flex flex-wrap justify-center mt-4">
+
+        @foreach($category_tots as $id => $total) 
+        @php $category = App\Models\Category::find($id); @endphp
+        <div class="w-1/5 mx-2 mb-4">
+            <div class="flex h-full border rounded-lg shadow p-8 flex-col text-center {{ $category->css_classes() }}">
+                <div class="mb-3">
+                    <h2 class="text-lg font-medium text-center">{{ $category->name }}</h2>
+                </div>
+                <div class="justify-between flex-grow">
+                    <p class="mb-2 text-3xl font-extrabold">
+                        &pound;{{ number_format($total, 2) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    
+    </div>
+
     <!-- Charts -->
-    <div class="w-full mt-8 bg-white border border-gray-200 rounded-lg shadow p-8">
+    <h2 class="mt-10 text-xl font-semibold text-center">Outgoings per day</h2>
+    <div class="w-full mt-4 bg-white border border-gray-200 rounded-lg shadow p-8">
         <canvas id="myChart" class="w-full bg-white"></canvas>
     </div>
 
@@ -175,7 +221,7 @@
                 datasets: [{
                     data: data,
                     label: "Outgoings",
-                    borderColor: "#3cba9f",
+                    borderColor: "#0E172B",
                     fill: false
                 }]
             },
@@ -184,11 +230,8 @@
                 plugins: {
                     legend: {
                         position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Outgoings per day'
                     }
+                    
                 }
             }
         });

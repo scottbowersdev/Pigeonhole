@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Month;
 use App\Models\Outgoing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class OutgoingsController extends Controller
@@ -21,7 +23,8 @@ class OutgoingsController extends Controller
         Gate::authorize('access', $month);
 
         return view('outgoings.create', [
-            'month' => $month
+            'month' => $month,
+            'categories' => Category::where('user_id', Auth::id())->get()
         ]);
     }
 
@@ -35,7 +38,7 @@ class OutgoingsController extends Controller
             'cost' => ['required', 'numeric', 'min:0.01']
         ]);
 
-        Outgoing::create([
+        $outgoing = Outgoing::create([
             'month_id' => $id,
             'recurring' => 0,
             'day' => request('day'),
@@ -43,6 +46,11 @@ class OutgoingsController extends Controller
             'cost' => request('cost'),
             'paid' => 0
         ]);
+
+        if(request('category') != null) {
+            $outgoing->categories()->attach(request('category'));
+        }
+
         return redirect('/month/' . $id)->withSuccess('Your outgoing has been added successfully.');
     }
 
@@ -50,7 +58,8 @@ class OutgoingsController extends Controller
     {
         return view('outgoings.edit', [
             'outgoing' => $outgoing,
-            'month' => $outgoing->month
+            'month' => $outgoing->month, 
+            'categories' => Category::where('user_id', Auth::id())->get()
         ]);
     }
 
@@ -72,6 +81,11 @@ class OutgoingsController extends Controller
             'title' => request('title'),
             'cost' => request('cost'),
         ]);
+
+        if(request('category') != null) {
+            $outgoing->categories()->detach();
+            $outgoing->categories()->attach(request('category'));
+        }
 
         // Redirect
         return redirect('/month/' . $month->id)->withSuccess('Your outgoing has been updated successfully.');

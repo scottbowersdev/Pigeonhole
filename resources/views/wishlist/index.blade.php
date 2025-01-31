@@ -10,6 +10,9 @@
     <x-messages type="success">{{ session('success') }}</x-messages>
     @endif
 
+    @php $category_tots = [];
+    @endphp
+
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
             <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($wishlist->sum('cost'),2) }}</h3>
@@ -57,6 +60,9 @@
             </thead>
             <tbody>
                 @foreach ($wishlist as $wishlist_item)
+                @php 
+                if(isset($category_tots[$wishlist_item->categories->first()->id])) { $category_tots[$wishlist_item->categories->first()->id] += $wishlist_item->cost; } else { $category_tots[$wishlist_item->categories->first()->id] = $wishlist_item->cost; }
+                @endphp
                 <tr class="hover:bg-slate-50 border-b border-slate-200">
                     <td class="p-4 py-5">
                         <p class="block font-semibold text-sm text-slate-800">{{ $wishlist_item->priority }}</p>
@@ -69,6 +75,9 @@
                                     {{ $wishlist_item->title }}
                                     @if(!empty($wishlist_item->url))
                                 </strong></a>
+                            @endif
+                            @if($wishlist_item->categories()->exists())
+                            <x-badge class="{{ $wishlist_item->categories->first()->css_classes() }}">{{ $wishlist_item->categories->first()->name }}</x-badge>
                             @endif
                         </p>
                     </td>
@@ -106,6 +115,28 @@
         </table>
     </div>
 
-    <div class="mt-6">{{ $wishlist->links() }}</div>
+    <!-- Categories card -->
+    @if(count($category_tots) > 0)
+    <h2 class="mt-10 text-xl font-semibold text-center">Category Breakdown</h2>
+    <div class="flex flex-wrap justify-center mt-4">
+
+        @foreach($category_tots as $id => $total) 
+        @php $category = App\Models\Category::find($id); @endphp
+        <div class="w-1/5 mx-2 mb-4">
+            <div class="flex h-full border rounded-lg shadow p-8 flex-col text-center {{ $category->css_classes() }}">
+                <div class="mb-3">
+                    <h2 class="text-lg font-medium text-center">{{ $category->name }}</h2>
+                </div>
+                <div class="justify-between flex-grow">
+                    <p class="mb-2 text-3xl font-extrabold">
+                        &pound;{{ number_format($total, 2) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    
+    </div>
+    @endif
 
 </x-layout>

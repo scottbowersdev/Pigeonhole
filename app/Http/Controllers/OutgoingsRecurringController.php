@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\OutgoingsRecurring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,13 +12,15 @@ class OutgoingsRecurringController extends Controller
     public function index()
     {
         return view('recurring-outgoings.index', [
-            'recurring_outgoings' => OutgoingsRecurring::where('user_id', Auth::id())->orderBy('day', 'asc')->orderBy('cost', 'asc')->get()
+            'recurring_outgoings' => OutgoingsRecurring::where('user_id', Auth::id())->orderBy('day', 'asc')->orderBy('cost', 'asc')->get(),
         ]);
     }
 
     public function create()
     {
-        return view('recurring-outgoings.create');
+        return view('recurring-outgoings.create', [
+            'categories' => Category::where('user_id', Auth::id())->get()
+        ]);
     }
 
     public function store()
@@ -28,12 +31,17 @@ class OutgoingsRecurringController extends Controller
             'cost' => ['required', 'numeric', 'min:0.01']
         ]);
 
-        OutgoingsRecurring::create([
-            'user_id' => 1,
+        $outgoingRecurring = OutgoingsRecurring::create([
+            'user_id' => Auth::id(),
             'day' => request('day'),
             'title' => request('title'),
             'cost' => request('cost')
         ]);
+
+        if(request('category') != null) {
+            $outgoingRecurring->categories()->attach(request('category'));
+        }
+
 
         return redirect('/recurring-outgoings')->withSuccess('Your recurring outgoing has been added successfully.');
     }
@@ -41,7 +49,8 @@ class OutgoingsRecurringController extends Controller
     public function edit(OutgoingsRecurring $outgoingsRecurring)
     {
         return view('recurring-outgoings.edit', [
-            'recurring_outgoings' => $outgoingsRecurring
+            'recurring_outgoings' => $outgoingsRecurring, 
+            'categories' => Category::where('user_id', Auth::id())->get()
         ]);
     }
 
@@ -61,6 +70,11 @@ class OutgoingsRecurringController extends Controller
             'title' => request('title'),
             'cost' => request('cost'),
         ]);
+
+        if(request('category') != null) {
+            $outgoingsRecurring->categories()->detach();
+            $outgoingsRecurring->categories()->attach(request('category'));
+        }
 
         // Redirect
         return redirect('/recurring-outgoings')->withSuccess('Your recurring outgoing has been updated successfully.');
