@@ -10,6 +10,10 @@
                 </a>
               </div>
           <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Log In</h2>
+
+          @if (session('status'))
+            <x-messages type="success">{{ session('status') }}</x-messages>
+          @endif
           
           <form class="space-y-4" method="POST" action="/login">
             @csrf

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\OutgoingsController;
 use App\Http\Controllers\OutgoingsRecurringController;
 use App\Http\Controllers\RegisteredUserController;
@@ -140,13 +141,18 @@ Route::get('/recurring-outgoings/delete/{outgoingsRecurring}', [OutgoingsRecurri
     ->can('access', 'outgoingsRecurring');
 
 // Auth
-Route::get('/register', [RegisteredUserController::class, 'create']);
-Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest');
+Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 
-Route::get('/login', [SessionController::class, 'create'])->name('login');
-Route::post('/login', [SessionController::class, 'store']);
+Route::get('/login', [SessionController::class, 'create'])->middleware('guest')->name('login');
+Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 
-Route::post('/logout', [SessionController::class, 'destroy']);
+Route::get('/forgot-password', [ForgotPasswordController::class, 'index'])->middleware('guest')->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->middleware('guest')->name('password.email');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'view'])->middleware('guest')->name('password.reset');
+Route::patch('/reset-password', [ForgotPasswordController::class, 'update'])->middleware('guest')->name('password.update');
+
+Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->middleware('auth');
