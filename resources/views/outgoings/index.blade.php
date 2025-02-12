@@ -21,16 +21,24 @@
 
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
-            <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($month['income'],2) }}</h3>
+            <h3 id="monthlyIncome" class="text-lg font-bold text-slate-800 dark:text-gray-100">&pound;{{ number_format($month['income'],2) }}</h3>
+            <form id="editMonthlyIncome" class="hidden" method="POST" action="/month/{{ $month->id }}">
+                @csrf
+                @method('PATCH')
+                <div class="flex items-center rounded-md bg-white dark:bg-black pl-3 outline outline-1 -outline-offset-1 {{ $errors->has('cost') ? 'outline-red-500' : 'outline-gray-300 dark:outline-black' }} focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                    <div class="shrink-0 select-none text-base text-gray-500 dark:text-gray-300 sm:text-sm/6">&pound;</div>
+                    <input type="number" min="0.01" step="0.01" name="monthly_income" id="monthly_income" value="{{ $month->income }}" class="block min-w-0 grow py-1.5 pl-1 px-3 text-base dark:text-white text-gray-900 dark:bg-black placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6" placeholder="2000" required>
+                </div>
+            </form>
         </div>
         <div class="ml-3">
             <div class="w-full max-w-sm min-w-[200px] relative">
                 <div class="relative">
                     <input
-                        class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                        class="bg-white dark:bg-black dark:border-slate-800 dark:text-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                         placeholder="Search" />
                     <button
-                        class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded "
+                        class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white dark:bg-black rounded "
                         type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8 text-slate-600">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -41,37 +49,37 @@
         </div>
     </div>
 
-    <div class="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+    <div class="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border overflow-x-auto">
         <table class="w-full text-left table-auto min-w-max">
             <thead>
                 <tr>
-                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500 text-center">
+                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                        <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white text-center">
                             Day
                         </p>
                     </th>
-                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
+                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                        <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Name
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
+                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                        <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Cost
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50">
+                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($month->outgoings as $outgoing)
                 @php if($outgoing->paid == 1) { 
-                    $highlight_css = 'bg-green-50 border-emerald-200'; 
+                    $highlight_css = 'bg-green-50 border-emerald-200 dark:bg-emerald-900 dark:border-emerald-800'; 
                 } elseif(date('d') > $outgoing->day && $month->month == date('m')) { 
-                    $highlight_css = 'bg-red-50 border-red-200'; 
+                    $highlight_css = 'bg-red-50 border-red-200 dark:bg-red-900 dark:border-red-800'; 
                 } else { 
-                    $highlight_css = 'border-slate-200'; 
+                    $highlight_css = 'border-slate-200 dark:bg-slate-800 dark:border-slate-900'; 
                 }
                 if($outgoing->categories->count() > 0 && isset($category_tots[$outgoing->categories->first()->id])) {
                     $category_tots[$outgoing->categories->first()->id] += $outgoing->cost; 
@@ -79,7 +87,7 @@
                     $category_tots[$outgoing->categories->first()->id] = $outgoing->cost; 
                 }
                 @endphp
-                <tr class="text-slate-800 border-b {{ $highlight_css }}">
+                <tr class="text-slate-800 dark:text-gray-100 border-b {{ $highlight_css }}">
                     <td class="p-4 py-5">
                         <p class="block text-xs text-center">{{ $outgoing->day }}</p>
                     </td>
@@ -87,7 +95,7 @@
                         <p class="text-sm flex-1">
                             {{ $outgoing->title }}
                             @if($outgoing->categories()->exists())
-                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }}">{{ $outgoing->categories->first()->name }}</x-badge>
+                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }} ml-2">{{ $outgoing->categories->first()->name }}</x-badge>
                             @endif
                         </p>
                         @if($outgoing->recurring == 1)
@@ -137,11 +145,11 @@
     </div>
 
     <!-- Totals card -->
-    <h2 class="mt-10 text-xl font-semibold text-center">Outgoings Breakdown</h2>
-    <div class="w-full mt-4 bg-white border border-gray-200 rounded-lg shadow">
-        <div class="border-t border-gray-200">
-            <div class=" p-4 bg-white rounded-lg md:p-8" id="stats" role="tabpanel" aria-labelledby="stats-tab">
-                <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 sm:p-8">
+    <h2 class="mt-10 text-xl font-semibold text-center dark:text-gray-100">Outgoings Breakdown</h2>
+    <div class="w-full mt-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-slate-800 dark:border-slate-900">
+        <div class="">
+            <div class=" p-4 rounded-lg md:p-8" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+                <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 dark:text-gray-200 sm:grid-cols-3 sm:p-8">
                     <div class="flex flex-col items-center justify-center">
                         <dt class="mb-2 text-3xl font-extrabold">&pound;{{ number_format($total_out,2) }}</dt>
                         <dd class="text-gray-500">Total Out</dd>
@@ -163,12 +171,12 @@
     </div>
 
     <!-- Categories card -->
-    <h2 class="mt-10 text-xl font-semibold text-center">Category Breakdown</h2>
+    <h2 class="mt-10 text-xl font-semibold text-center dark:text-gray-100">Category Breakdown</h2>
     <div class="flex flex-wrap justify-center mt-4">
 
         @foreach($category_tots as $id => $total) 
         @php $category = App\Models\Category::find($id); @endphp
-        <div class="w-1/5 mx-2 mb-4">
+        <div class="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mx-2 mb-4">
             <div class="flex h-full border rounded-lg shadow p-8 flex-col text-center {{ $category->css_classes() }}">
                 <div class="mb-3">
                     <h2 class="text-lg font-medium text-center">{{ $category->name }}</h2>
@@ -185,9 +193,9 @@
     </div>
 
     <!-- Charts -->
-    <h2 class="mt-10 text-xl font-semibold text-center">Outgoings per day</h2>
-    <div class="w-full mt-4 bg-white border border-gray-200 rounded-lg shadow p-8">
-        <canvas id="myChart" class="w-full bg-white"></canvas>
+    <h2 class="mt-10 text-xl font-semibold text-center dark:text-gray-100">Outgoings per day</h2>
+    <div class="w-full mt-4 bg-white border border-gray-200 dark:bg-slate-800 dark:border-slate-900 rounded-lg shadow p-8">
+        <canvas id="myChart" class="w-full bg-white dark:bg-slate-800"></canvas>
     </div>
 
     <script>
@@ -234,6 +242,15 @@
                     
                 }
             }
+        });
+    </script>
+    <script>
+        var monthlyIncomeDisplay = document.getElementById("monthlyIncome");
+        var monthlyIncomeForm = document.getElementById("editMonthlyIncome");
+
+        monthlyIncomeDisplay.addEventListener("click", function() {
+            monthlyIncomeDisplay.style.display = "none";
+            monthlyIncomeForm.style.display = "block";
         });
     </script>
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\MonthController;
 use App\Http\Controllers\OutgoingsController;
 use App\Http\Controllers\OutgoingsRecurringController;
 use App\Http\Controllers\RegisteredUserController;
@@ -14,10 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 //Dashboard
 Route::get('/', function () {
+
     Auth::user()->generateMonths();
+
     return view('index', [
         'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->where('user_id', Auth::id())->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
     ]);
+    
 })->middleware('auth');
 
 // Months
@@ -26,8 +30,12 @@ Route::get('/month/{month}', function (Month $month) {
         'month' => $month,
     ]);
 })
-->middleware('auth')
-->can('access', 'month');
+    ->middleware('auth')
+    ->can('access', 'month');
+
+Route::patch('/month/{month}', [MonthController::class, 'update'])
+    ->middleware('auth')
+    ->can('access', 'month');
 
 //Categories
 Route::get('/categories', [CategoryController::class, 'index'])

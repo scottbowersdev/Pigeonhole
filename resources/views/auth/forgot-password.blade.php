@@ -2,16 +2,16 @@
 
     <x-slot:meta_title>Forgot Password - Pigeonhole | Organise your money</x-slot:meta_title>
 
-    <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+    <div class="min-h-screen bg-gray-100 dark:bg-slate-900 flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
           <div class="items-center justify-center flex mb-6">
             <a href="/login">
                 <x-logo />
             </a>
           </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Forgot Password</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Forgot Password</h2>
 
-          <p>Please enter the email address associated with your account below and we will send you a password reset link.</p>
+          <p class="dark:text-gray-100">Please enter the email address associated with your account below and we will send you a password reset link.</p>
 
           @if (session('status'))
             <x-messages type="success">{{ session('status') }}</x-messages>

@@ -15,16 +15,16 @@
 
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
-            <h3 class="text-lg font-bold text-slate-800">&pound;{{ number_format($wishlist->sum('cost'),2) }}</h3>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-gray-100">&pound;{{ number_format($wishlist->sum('cost'),2) }}</h3>
         </div>
         <div class="ml-3">
             <div class="w-full max-w-sm min-w-[200px] relative">
                 <div class="relative">
                     <input
-                        class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                        class="bg-white dark:bg-black dark:border-slate-800 dark:text-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                         placeholder="Search" />
                     <button
-                        class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded "
+                        class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white dark:bg-black rounded "
                         type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8 text-slate-600">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -35,26 +35,26 @@
         </div>
     </div>
 
-    <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+    <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border overflow-x-auto">
         <table class="w-full text-left table-auto min-w-max">
             <thead>
                 <tr>
-                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
+                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                        <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Priority
                         </p>
                     </th>
-                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
+                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                        <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Name
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50">
-                        <p class="block text-sm font-normal leading-none text-slate-500">
+                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                        <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Cost
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50">
+                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                     </th>
                 </tr>
             </thead>
@@ -63,12 +63,12 @@
                 @php 
                 if(isset($category_tots[$wishlist_item->categories->first()->id])) { $category_tots[$wishlist_item->categories->first()->id] += $wishlist_item->cost; } else { $category_tots[$wishlist_item->categories->first()->id] = $wishlist_item->cost; }
                 @endphp
-                <tr class="hover:bg-slate-50 border-b border-slate-200">
+                <tr class="border-b border-slate-200 dark:bg-slate-800 dark:border-slate-900 dark:text-gray-100">
                     <td class="p-4 py-5">
-                        <p class="block font-semibold text-sm text-slate-800">{{ $wishlist_item->priority }}</p>
+                        <p class="block font-semibold text-sm text-slate-800 dark:text-gray-100">{{ $wishlist_item->priority }}</p>
                     </td>
                     <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">
+                        <p class="block text-sm text-slate-800 dark:text-gray-100">
                             @if(!empty($wishlist_item->url))
                             <a href="{{ $wishlist_item->url }}" target="_blank"><strong>
                                     @endif
@@ -77,12 +77,12 @@
                                 </strong></a>
                             @endif
                             @if($wishlist_item->categories()->exists())
-                            <x-badge class="{{ $wishlist_item->categories->first()->css_classes() }}">{{ $wishlist_item->categories->first()->name }}</x-badge>
+                            <x-badge class="{{ $wishlist_item->categories->first()->css_classes() }} ml-2">{{ $wishlist_item->categories->first()->name }}</x-badge>
                             @endif
                         </p>
                     </td>
                     <td class="p-4 py-5">
-                        <p class="block text-sm text-slate-800">&pound;{{ $wishlist_item->cost }}</p>
+                        <p class="block text-sm text-slate-800 dark:text-gray-100">&pound;{{ $wishlist_item->cost }}</p>
                     </td>
                     <td class="p-4 py-5">
                         <div class="block text-center">
@@ -117,12 +117,12 @@
 
     <!-- Categories card -->
     @if(count($category_tots) > 0)
-    <h2 class="mt-10 text-xl font-semibold text-center">Category Breakdown</h2>
+    <h2 class="mt-10 text-xl font-semibold text-center dark:text-gray-100">Category Breakdown</h2>
     <div class="flex flex-wrap justify-center mt-4">
 
         @foreach($category_tots as $id => $total) 
         @php $category = App\Models\Category::find($id); @endphp
-        <div class="w-1/5 mx-2 mb-4">
+        <div class="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mx-2 mb-4">
             <div class="flex h-full border rounded-lg shadow p-8 flex-col text-center {{ $category->css_classes() }}">
                 <div class="mb-3">
                     <h2 class="text-lg font-medium text-center">{{ $category->name }}</h2>
