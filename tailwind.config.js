@@ -17,4 +17,7 @@ export default {
         },
     },
     plugins: [],
+    safelist: [
+        {pattern: /(bg|text|border|ring)-./}
+    ]
 };

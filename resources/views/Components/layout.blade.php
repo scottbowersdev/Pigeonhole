@@ -8,13 +8,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2/moment.min.js"></script>
-    <script>
-        if (localStorage.getItem('dark-mode') === 'true' || (!('dark-mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            localStorage.setItem('dark-mode', true);
-        } else {
-            localStorage.setItem('dark-mode', false);
-        }
-    </script>
 </head>
 
 <body class="h-full">
@@ -57,23 +50,6 @@
                                     </form>
                                     @endauth
                                 </div>
-
-                                <!--
-                Dropdown menu, show/hide based on menu state.
-
-                Entering: "transition ease-out duration-100"
-                  From: "transform opacity-0 scale-95"
-                  To: "transform opacity-100 scale-100"
-                Leaving: "transition ease-in duration-75"
-                  From: "transform opacity-100 scale-100"
-                  To: "transform opacity-0 scale-95"
-              -->
-                                <!--
-                                <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-                            </div>
-                            -->
                             </div>
                         </div>
                     </div>
@@ -82,11 +58,9 @@
                         <button type="button" onClick="showMobileMenu()" class="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="absolute -inset-0.5"></span>
                             <span class="sr-only">Open main menu</span>
-                            <!-- Menu open: "hidden", Menu closed: "block" -->
                             <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
-                            <!-- Menu open: "block", Menu closed: "hidden" -->
                             <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                             </svg>
@@ -146,43 +120,6 @@
             </label>
         </div>
     </div>
-
-    <script>
-        const lightSwitches = document.querySelectorAll('.light-switch');
-        if (lightSwitches.length > 0) {
-          lightSwitches.forEach((lightSwitch, i) => {
-            if (localStorage.getItem('dark-mode') === 'true') {
-              lightSwitch.checked = true;
-            }
-            lightSwitch.addEventListener('change', () => {
-                alert('clicked');
-              const { checked } = lightSwitch;
-              lightSwitches.forEach((el, n) => {
-                if (n !== i) {
-                  el.checked = checked;
-                }
-              });
-              if (lightSwitch.checked) {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('dark-mode', true);
-              } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('dark-mode', false);
-              }
-            });
-          });
-        }
-    </script>
-    <script>
-    function showMobileMenu() {
-        var menu = document.getElementById("mobile-menu");
-        if(menu.style.display === "block") {
-            menu.style.display = "none";
-        } else {
-            menu.style.display = "block";
-        }
-    }
-    </script>
 
 </body>
 
