@@ -31,7 +31,7 @@
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <x-form.field>
-                                    <label for="category" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100">Category</label>
+                                    <label for="category" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100">Colour</label>
                                     <div class="mt-2 grid grid-cols-1">
                                     <select id="color" name="color" autocomplete="color" placeholder="-- Please Select --" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white dark:bg-slate-900 dark:text-gray-100 py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 {{ $errors->has('category') ? 'outline-red-500' : 'outline-gray-300' }} focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                         <option value="">-- Please Select --</option>

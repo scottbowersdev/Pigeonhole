@@ -182,7 +182,7 @@
                     <h2 class="text-lg font-medium text-center">{{ $category->name }}</h2>
                 </div>
                 <div class="justify-between flex-grow">
-                    <p class="mb-2 text-3xl font-extrabold">
+                    <p class="mb-2 text-2xl font-extrabold">
                         &pound;{{ number_format($total, 2) }}
                     </p>
                 </div>
