@@ -1,9 +1,9 @@
 import './bootstrap';
 
 if (localStorage.getItem('dark-mode') === 'true' || (!('dark-mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    localStorage.setItem('dark-mode', true);
+    document.querySelector('html').classList.add('dark');
 } else {
-    localStorage.setItem('dark-mode', false);
+    document.querySelector('html').classList.remove('dark');
 }
 
 function showMobileMenu() {
@@ -22,7 +22,6 @@ if (lightSwitches.length > 0) {
         lightSwitch.checked = true;
     }
     lightSwitch.addEventListener('change', () => {
-        alert('clicked');
         const { checked } = lightSwitch;
         lightSwitches.forEach((el, n) => {
         if (n !== i) {
