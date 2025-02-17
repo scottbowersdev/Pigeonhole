@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 //Dashboard
-Route::get('/', function () {
+Route::get('/', function () { 
 
     Auth::user()->generateMonths();
 
