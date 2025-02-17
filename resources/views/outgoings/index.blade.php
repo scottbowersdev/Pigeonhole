@@ -25,9 +25,9 @@
             <form id="editMonthlyIncome" class="hidden" method="POST" action="/month/{{ $month->id }}">
                 @csrf
                 @method('PATCH')
-                <div class="flex items-center rounded-md bg-white dark:bg-black pl-3 outline outline-1 -outline-offset-1 {{ $errors->has('cost') ? 'outline-red-500' : 'outline-gray-300 dark:outline-black' }} focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                <div class="flex items-center rounded-md bg-white dark:bg-black pl-3 outline-1 -outline-offset-1 {{ $errors->has('cost') ? 'outline-red-500' : 'outline-gray-300 dark:outline-black' }} focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                     <div class="shrink-0 select-none text-base text-gray-500 dark:text-gray-300 sm:text-sm/6">&pound;</div>
-                    <input type="number" min="0.01" step="0.01" name="monthly_income" id="monthly_income" value="{{ $month->income }}" class="block min-w-0 grow py-1.5 pl-1 px-3 text-base dark:text-white text-gray-900 dark:bg-black placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6" placeholder="2000" required>
+                    <input type="number" min="0.01" step="0.01" name="monthly_income" id="monthly_income" value="{{ $month->income }}" class="block min-w-0 grow py-1.5 pl-1 px-3 text-base dark:text-white text-gray-900 dark:bg-black placeholder:text-gray-400 focus:outline-0 sm:text-sm/6" placeholder="2000" required>
                 </div>
             </form>
         </div>
@@ -35,7 +35,7 @@
             <div class="w-full max-w-sm min-w-[200px] relative">
                 <div class="relative">
                     <input
-                        class="bg-white dark:bg-black dark:border-slate-800 dark:text-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                        class="dark:bg-black dark:border-slate-800 dark:text-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                         placeholder="Search" />
                     <button
                         class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white dark:bg-black rounded "
@@ -99,7 +99,7 @@
                             @endif
                         </p>
                         @if($outgoing->recurring == 1)
-                            <svg class="w-4 h-4 flex-1 stroke-black stroke-2 dark:fill-gray-100 dark:stroke-gray-100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-4 h-4 flex-1 stroke-black stroke-2 dark:stroke-gray-100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17 2L21 6M21 6L17 10M21 6H7.8C6.11984 6 5.27976 6 4.63803 6.32698C4.07354 6.6146 3.6146 7.07354 3.32698 7.63803C3 8.27976 3 9.11984 3 10.8V11M3 18H16.2C17.8802 18 18.7202 18 19.362 17.673C19.9265 17.3854 20.3854 16.9265 20.673 16.362C21 15.7202 21 14.8802 21 13.2V13M3 18L7 22M3 18L7 14" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                         @endif
@@ -112,7 +112,7 @@
 
                             <a href="/outgoings/paid/{{ $outgoing->id }}" class="inline-block">
                                 @if($outgoing->paid == 0)
-                                <svg class="w-4 h-4 stroke-black stroke-2 dark:fill-gray-100 dark:stroke-gray-100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-4 h-4 stroke-black stroke-2 dark:stroke-gray-100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 @elseif($outgoing->paid == 1)
@@ -149,7 +149,7 @@
     <div class="w-full mt-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-slate-800 dark:border-slate-900">
         <div class="">
             <div class=" p-4 rounded-lg md:p-8" id="stats" role="tabpanel" aria-labelledby="stats-tab">
-                <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 dark:text-gray-200 sm:grid-cols-3 sm:p-8">
+                <dl class="grid max-w-screen-xl grid-cols-1 gap-8 p-4 mx-auto text-gray-900 dark:text-gray-200 sm:grid-cols-3 sm:p-8">
                     <div class="flex flex-col items-center justify-center">
                         <dt class="mb-2 text-3xl font-extrabold">&pound;{{ number_format($total_out,2) }}</dt>
                         <dd class="text-gray-500">Total Out</dd>

@@ -21,7 +21,7 @@
             <div class="w-full max-w-sm min-w-[200px] relative">
                 <div class="relative">
                     <input
-                        class="bg-white dark:bg-black dark:border-slate-800 dark:text-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                        class=" dark:bg-black dark:border-slate-800 dark:text-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                         placeholder="Search" />
                     <button
                         class="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white dark:bg-black rounded "

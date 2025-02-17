@@ -6,15 +6,6 @@ if (localStorage.getItem('dark-mode') === 'true' || (!('dark-mode' in localStora
     document.querySelector('html').classList.remove('dark');
 }
 
-function showMobileMenu() {
-    var menu = document.getElementById("mobile-menu");
-    if(menu.style.display === "block") {
-        menu.style.display = "none";
-    } else {
-        menu.style.display = "block";
-    }
-}
-
 const lightSwitches = document.querySelectorAll('.light-switch');
 if (lightSwitches.length > 0) {
     lightSwitches.forEach((lightSwitch, i) => {

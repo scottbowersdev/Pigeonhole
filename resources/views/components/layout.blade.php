@@ -98,8 +98,8 @@
         </nav>
 
         <header class="bg-white dark:bg-slate-950 shadow">
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:flex sm:justify-between">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">{{ $page_title }}</h1>
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex justify-between">
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">{{ $page_title }}</h1>
                 <div>{{ $buttons }}</div>
             </div>
         </header>
@@ -126,6 +126,17 @@
             </label>
         </div>
     </div>
+
+    <script>
+    function showMobileMenu() {
+        var menu = document.getElementById("mobile-menu");
+        if(menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+    </script>
 
 </body>
 
