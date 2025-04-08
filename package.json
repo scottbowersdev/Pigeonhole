@@ -15,8 +15,8 @@
         "dev": "vite",
         "test": "echo $npm_package_config_ssh_user", 
         "push:git": "clear && git config core.ignorecase false && branch=\"$(git symbolic-ref -q HEAD)\" || \"dev\" && branch=${branch##refs/heads/} && branch=${branch:-HEAD} && echo Pushing to Branch \"$branch\" && echo Please type your commit message && read msg && clear && git add . && git commit -m \"$msg\" && git push origin \"$branch\"",
-        "sync:live": "echo Starting File Sync && rsync --ignore-errors -avz --delete --exclude-from=\".syncignore\" -e \"ssh -p22 -i ~/.ssh/id_ed25519\" * $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_live && echo Finished File Sync",
-        "push:live": "clear && echo Starting Live Push && yarn vite build && yarn sync:live && ssh -i ~/.ssh/id_ed25519 $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_live && /usr/bin/php74 -d memory_limit=-1 -f composer.phar update && /usr/bin/php74 artisan cache:clear && /usr/bin/php74 artisan migrate && rm -rf public/storage && /usr/bin/php74 artisan storage:link\" && echo Finished Live Push"
+        "sync:live": "echo Starting File Sync && rsync --ignore-errors -avz --delete --exclude-from=\".syncignore\" -e \"ssh -vvv -p22 -i ~/.ssh/id_ed25519\" * $npm_package_config_ssh_user@$npm_package_config_ssh_server:$npm_package_config_ssh_folders_live && echo Finished File Sync",
+        "push:live": "clear && echo Starting Live Push && yarn vite build && yarn sync:live && ssh -i ~/.ssh/id_ed25519 $npm_package_config_ssh_user@$npm_package_config_ssh_server \"cd $npm_package_config_ssh_folders_live && /usr/bin/php82 -d memory_limit=-1 -f composer update && /usr/bin/php82 artisan cache:clear && /usr/bin/php82 artisan migrate && rm -rf public/storage && /usr/bin/php82 artisan storage:link\" && echo Finished Live Push"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",

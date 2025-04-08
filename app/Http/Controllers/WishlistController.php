@@ -79,8 +79,9 @@ class WishlistController extends Controller
         if(request('category') != null) {
             $wishlist->categories()->detach();
             $wishlist->categories()->attach(request('category'));
+        } else {
+            $wishlist->categories()->detach();
         }
-
 
         // Redirect
         return redirect('/wishlist')->withSuccess('Your wishlist item has been updated successfully.');
