@@ -14,14 +14,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 //Dashboard
-Route::get('/', function () { 
+Route::get('/', function () {
 
     Auth::user()->generateMonths();
 
+    $now   = now(); 
+    $year  = (int) $now->year;
+    $month = (int) $now->month;
+
     return view('index', [
-        'months' => Month::where('year', '>=', date('Y'))->where('month', '>=', date('n'))->where('user_id', Auth::id())->orderBy('year', 'asc')->orderBy('month', 'asc')->with('outgoings')->get(),
+        'months' => Month::where('user_id', Auth::id())
+            ->where(function ($q) use ($year, $month) {
+                $q->where('year', '>', $year)
+                    ->orWhere(function ($q) use ($year, $month) {
+                        $q->where('year', $year)
+                            ->where('month', '>', $month);
+                    });
+            })
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->with('outgoings')
+            ->get()
     ]);
-    
 })->middleware('auth');
 
 // Months
