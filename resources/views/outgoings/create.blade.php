@@ -5,7 +5,7 @@
     <x-slot:buttons><a href="/month/{{ $month['id'] }}" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Back</a></x-slot:buttons>
 
     <div class="bg-gray-100 dark:bg-slate-900 flex items-center justify-center p-4">
-        <div class="max-w-xl w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
+        <div class="max-w-xl w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg sm:p-8 p-4">
     
             <form class="max-w-screen-md m-auto" method="POST" action="/outgoings/{{ $month['id'] }}">
                 @csrf
@@ -14,7 +14,7 @@
                         <h2 class="text-base/7 font-semibold text-gray-900 dark:text-white">Add new outgoing</h2>
                         <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-100">Please add your new outgoing information below.</p>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid sm:grid-cols-2 grid-cols-1">
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <x-form.field>

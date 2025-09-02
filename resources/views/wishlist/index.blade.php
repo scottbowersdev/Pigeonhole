@@ -39,22 +39,22 @@
         <table class="w-full text-left table-auto min-w-max">
             <thead>
                 <tr>
-                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Priority
                         </p>
                     </th>
-                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Name
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Cost
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                     </th>
                 </tr>
             </thead>
@@ -68,10 +68,10 @@
                 }
                 @endphp
                 <tr class="border-b border-slate-200 dark:bg-slate-800 dark:border-slate-900 dark:text-gray-100">
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <p class="block font-semibold text-sm text-slate-800 dark:text-gray-100">{{ $wishlist_item->priority }}</p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <p class="block text-sm text-slate-800 dark:text-gray-100">
                             @if(!empty($wishlist_item->url))
                             <a href="{{ $wishlist_item->url }}" target="_blank"><strong>
@@ -81,14 +81,14 @@
                                 </strong></a>
                             @endif
                             @if($wishlist_item->categories()->exists())
-                            <x-badge class="{{ $wishlist_item->categories->first()->css_classes() }} ml-2">{{ $wishlist_item->categories->first()->name }}</x-badge>
+                            <x-badge class="{{ $wishlist_item->categories->first()->css_classes() }} ml-2 hidden">{{ $wishlist_item->categories->first()->name }}</x-badge>
                             @endif
                         </p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <p class="block text-sm text-slate-800 dark:text-gray-100">&pound;{{ $wishlist_item->cost }}</p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <div class="block text-center">
 
                             <a href="/wishlist/paid/{{ $wishlist_item->id }}" class="text-slate-600 hover:text-slate-800 inline-block">

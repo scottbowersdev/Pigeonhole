@@ -9,7 +9,7 @@
     @endif
 
     <div class="bg-gray-100 dark:bg-slate-900 flex items-center justify-center p-4">
-        <div class="max-w-xl w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
+        <div class="max-w-xl w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg sm:p-8 p-4">
 
             <form class="max-w-screen-md m-auto" method="POST" action="/profile">
                 @csrf
@@ -18,7 +18,7 @@
                     <div class="border-b border-gray-900/10 pb-12">
                         <h2 class="text-base/7 font-semibold text-gray-900 dark:text-white">My Profile</h2>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid sm:grid-cols-2 grid-cols-1">
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <x-form.field>

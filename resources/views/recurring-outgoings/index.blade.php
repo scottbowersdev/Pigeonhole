@@ -39,22 +39,22 @@
         <table class="w-full text-left table-auto min-w-max">
             <thead>
                 <tr>
-                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Day
                         </p>
                     </th>
-                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Name
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Cost
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                     </th>
                 </tr>
             </thead>
@@ -64,21 +64,21 @@
                 if(isset($category_tots[$outgoing->categories->first()->id])) { $category_tots[$outgoing->categories->first()->id] += $outgoing->cost; } else { $category_tots[$outgoing->categories->first()->id] = $outgoing->cost; }
                 @endphp
                 <tr class="border-b border-slate-200 dark:bg-slate-800 dark:border-slate-900 dark:text-gray-100">
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <p class="block font-semibold text-sm text-slate-800 dark:text-gray-100">{{ $outgoing->day }}</p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <p class="block text-sm text-slate-800 dark:text-gray-100">
                             {{ $outgoing->title }}
                             @if($outgoing->categories()->exists())
-                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }} ml-2">{{ $outgoing->categories->first()->name }}</x-badge>
+                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }} ml-2 hidden">{{ $outgoing->categories->first()->name }}</x-badge>
                             @endif
                         </p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <p class="block text-sm text-slate-800 dark:text-gray-100">&pound;{{ number_format($outgoing->cost,2) }}</p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4">
                         <div class="block text-center">
 
                             <a href="/recurring-outgoings/edit/{{ $outgoing->id }}" class="text-slate-600 hover:text-slate-800 inline-block">

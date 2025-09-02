@@ -53,22 +53,22 @@
         <table class="w-full text-left table-auto min-w-max">
             <thead>
                 <tr>
-                    <th width="10%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white text-center">
                             Day
                         </p>
                     </th>
-                    <th width="60%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Name
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th  class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                         <p class="block text-sm font-normal leading-none text-slate-500 dark:text-white">
                             Cost
                         </p>
                     </th>
-                    <th width="20%" class="p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
+                    <th class="px-2 py-4 sm:p-4 border-b border-slate-300 bg-slate-50 dark:bg-black dark:border-slate-700">
                     </th>
                 </tr>
             </thead>
@@ -88,26 +88,26 @@
                 }
                 @endphp
                 <tr class="text-slate-800 dark:text-gray-100 border-b {{ $highlight_css }}">
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4 ">
                         <p class="block text-xs text-center">{{ $outgoing->day }}</p>
                     </td>
-                    <td class="p-4 py-5 flex">
+                    <td class="px-2 py-4 sm:p-4 flex">
                         <p class="text-sm flex-1">
                             {{ $outgoing->title }}
                             @if($outgoing->categories()->exists())
-                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }} ml-2">{{ $outgoing->categories->first()->name }}</x-badge>
+                            <x-badge class="{{ $outgoing->categories->first()->css_classes() }} ml-2 hidden">{{ $outgoing->categories->first()->name }}</x-badge>
                             @endif
                         </p>
                         @if($outgoing->recurring == 1)
-                            <svg class="w-4 h-4 flex-1 stroke-black stroke-2 dark:stroke-gray-100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="hidden sm:table-cell w-4 h-4 flex-1 stroke-black stroke-2 dark:stroke-gray-100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17 2L21 6M21 6L17 10M21 6H7.8C6.11984 6 5.27976 6 4.63803 6.32698C4.07354 6.6146 3.6146 7.07354 3.32698 7.63803C3 8.27976 3 9.11984 3 10.8V11M3 18H16.2C17.8802 18 18.7202 18 19.362 17.673C19.9265 17.3854 20.3854 16.9265 20.673 16.362C21 15.7202 21 14.8802 21 13.2V13M3 18L7 22M3 18L7 14" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                         @endif
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4 ">
                         <p class="block text-sm">&pound;{{ number_format($outgoing->cost,2) }}</p>
                     </td>
-                    <td class="p-4 py-5">
+                    <td class="px-2 py-4 sm:p-4 ">
                         <div class="block text-center">
 
                             <a href="/outgoings/paid/{{ $outgoing->id }}" class="inline-block">

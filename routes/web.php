@@ -28,7 +28,7 @@ Route::get('/', function () {
                 $q->where('year', '>', $year)
                     ->orWhere(function ($q) use ($year, $month) {
                         $q->where('year', $year)
-                            ->where('month', '>', $month);
+                            ->where('month', '>=', $month);
                     });
             })
             ->orderBy('year', 'asc')
@@ -174,7 +174,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->mid
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'view'])->middleware('guest')->name('password.reset');
 Route::patch('/reset-password', [ForgotPasswordController::class, 'update'])->middleware('guest')->name('password.update');
 
-Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
+Route::get('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->middleware('auth');
